@@ -1,0 +1,20 @@
+name: renew docker image tag and digest periodically and on-demand
+
+on:
+  schedule:
+    - cron: '0 1 * * *'  # Runs daily at midnight
+  workflow_dispatch:
+
+jobs:
+  check_latest_docker_image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Echo test action
+        run: echo test action 
+
