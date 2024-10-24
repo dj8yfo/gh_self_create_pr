@@ -26,8 +26,16 @@ jobs:
 
           let mod_content = (
             open Cargo.toml --raw | lines
-            | each { |line| if ($line | str starts-with "image = ") { $'image = "sourcescan/cargo-near:($record.name)"' } else { $line } } 
-            | each { |line| if ($line | str starts-with "image_digest = ") { $'image_digest = "($record.digest)"' } else { $line } } 
+            | each { 
+              |line| if ($line | str starts-with "image = ") { 
+                $'image = "sourcescan/cargo-near:($record.name)"' 
+              } else { $line } 
+            } 
+            | each { 
+              |line| if ($line | str starts-with "image_digest = ") { 
+                $'image_digest = "($record.digest)"' 
+              } else { $line } 
+            } 
             | to text
           );
 
