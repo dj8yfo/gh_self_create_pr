@@ -24,10 +24,16 @@ jobs:
         run: |
           let record = http get "https://hub.docker.com/v2/namespaces/sourcescan/repositories/cargo-near/tags" | get results | first;
 
-          let mod_content = (open Cargo.toml --raw | lines
-          | each { |line| if ($line | str starts-with "image = ") { $'image = "sourcescan/cargo-near:($record.name)"' } else { $line } } 
-          | each { |line| if ($line | str starts-with "image_digest = ") { $'image_digest = "($record.digest)"' } else { $line } } 
-          | to text);
+          let mod_content = (
+            open Cargo.toml --raw | lines
+            | each { |line| if ($line | str starts-with "image = ") { $'image = "sourcescan/cargo-near:($record.name)"' } else { $line } } 
+            | each { |line| if ($line | str starts-with "image_digest = ") { $'image_digest = "($record.digest)"' } else { $line } } 
+            | to text
+          );
 
           $mod_content | save -f Cargo.toml
+
           git diff
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
