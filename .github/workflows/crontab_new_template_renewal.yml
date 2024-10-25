@@ -7,7 +7,7 @@ on:
 
 permissions:
   pull-requests: write
-  contents: read
+  contents: write
 
 jobs:
   check_latest_docker_image:
